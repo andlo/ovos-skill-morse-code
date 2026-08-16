@@ -5,15 +5,15 @@
   "pip_spec": "ovos-skill-morse-code",
   "license": "GPL-3.0-or-later",
   "author": "andlo",
-  "name": "MorseCode",
-  "description": "Koder/afkoder tekst til og fra morsekode, afspillet som hoerbare bip. 'Hvordan siger man SOS paa morse' -> biper ... --- .... Nichet men fuldstaendig deterministisk - en fast tegn-til-signal-opslagstabel, ingen tvetydighed, appellerer til ham-radio/hobby-segmentet.",
+  "name": "Morsekode",
+  "description": "Koder tekst til morsekode, afspillet som genererede hørbare bip. Fuldstændig offline, ingen optagelser.",
   "examples": [
-    "hvordan siger man SOS paa morse",
-    "spil SOS som morse"
+    "hvordan siger man SOS på morse",
+    "spil hello world på morse"
   ],
   "tags": [
-    "morse code",
-    "novelty",
+    "morsekode",
+    "underholdning",
     "ham radio"
   ],
   "icon": "https://raw.githubusercontent.com/andlo/ovos-skill-morse-code/main/icon.png"

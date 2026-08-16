@@ -5,11 +5,11 @@
   "pip_spec": "ovos-skill-morse-code",
   "license": "GPL-3.0-or-later",
   "author": "andlo",
-  "name": "MorseCode",
-  "description": "Encodes/decodes text to and from Morse code, played as audible beeps. 'How do you say SOS in Morse' -> beeps out ... --- .... Niche but fully deterministic - a fixed character-to-signal lookup table, no ambiguity, appeals to the ham-radio/hobbyist crowd.",
+  "name": "Morse Code",
+  "description": "Encodes text to Morse code, played as generated audible beeps. Fully offline, nothing recorded.",
   "examples": [
     "how do you say SOS in morse code",
-    "play SOS in morse"
+    "play hello world in morse"
   ],
   "tags": [
     "morse code",

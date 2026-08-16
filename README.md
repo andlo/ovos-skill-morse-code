@@ -1,24 +1,43 @@
-# MorseCode
+# <img src='icon.png' card_color='#40A0DB' width='50' height='50' style='vertical-align:bottom'/> Morse Code
 
-Encodes/decodes text to and from Morse code, played as audible beeps. 'How do you say SOS in Morse' -> beeps out ... --- .... Niche but fully deterministic - a fixed character-to-signal lookup table, no ambiguity, appeals to the ham-radio/hobbyist crowd.
+Encodes text to International Morse Code, played as generated audible
+beeps - "how do you say SOS in morse" beeps out `... --- ...`. Same
+generated-audio philosophy as
+[ovos-skill-metronome](https://github.com/andlo/ovos-skill-metronome)/
+[ovos-skill-tuning-fork](https://github.com/andlo/ovos-skill-tuning-fork):
+nothing recorded, nothing to source or license.
 
-> **This is a skeleton only - not implemented yet.** Repo, structure,
-> and design notes are in place; the actual skill logic hasn't been
-> written. See "Design notes" in [DEVELOPMENT.md](DEVELOPMENT.md).
+[![Tests](https://github.com/andlo/ovos-skill-morse-code/actions/workflows/test.yml/badge.svg)](https://github.com/andlo/ovos-skill-morse-code/actions/workflows/test.yml)
+[![PyPI version](https://img.shields.io/pypi/v/ovos-skill-morse-code.svg)](https://pypi.org/project/ovos-skill-morse-code/)
 
-## Why this exists
-
-Nothing like this exists in the OVOS ecosystem yet (checked before starting). Fully deterministic character-lookup, same shape as the NATO alphabet skill - the two share very similar architecture.
-
-## Planned usage (not yet functional)
+## Usage
 ```
 "how do you say SOS in morse code"
-"play SOS in morse"
+"play hello world in morse"
+"hvordan siger man SOS på morse"    (Danish)
 ```
 
-## Install
+## Decode (morse -> text) is not implemented
 
-Not yet published to PyPI.
+This skill only *encodes* (text -> beeps). Decoding would require the
+user to speak something like "dot dot dot dash dash dash dot dot dot"
+and have that reliably transcribed by STT into literal "dot"/"dash"
+words - a much less reliable path than encoding, and arguably a
+different feature entirely, not a small addition. Left out of this
+release rather than built on shaky ground.
+
+## Timing
+
+Standard relative Morse timing units (dash = 3× a dot, gap between
+characters = 3× a dot, gap between words = 7× a dot), but a fixed,
+short dot duration rather than trying to match a specific "words per
+minute" telegraphy convention - the goal is a clearly recognizable
+representation, not amateur-radio-accurate speed.
+
+## Install
+```bash
+pip install ovos-skill-morse-code
+```
 
 ## Development
 
