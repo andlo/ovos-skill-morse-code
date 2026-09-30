@@ -43,13 +43,16 @@ recognizable representation, not amateur-radio-accurate speed.
 """
 
 import math
+import re
 import struct
 import tempfile
 import wave
 from pathlib import Path
 
-from ovos_workshop.skills import OVOSSkill
+from ovos_utils.ocp import MediaEntry, MediaType, PlaybackType
 from ovos_workshop.decorators import intent_handler
+from ovos_workshop.decorators.ocp import ocp_search
+from ovos_workshop.skills.common_play import OVOSCommonPlaybackSkill
 
 SAMPLE_RATE = 44100
 TONE_FREQUENCY = 600  # Hz - standard-ish CW practice tone
@@ -138,7 +141,52 @@ def _tone_path_for_text(text):
     return str(path)
 
 
-class MorseCode(OVOSSkill):
+# "play hello world in morse" is taken by the OCP pipeline before
+# padatious, so the skill also answers OCP's search (issue #2). The morse
+# is a generated wav, so OCP plays the file itself (PlaybackType.AUDIO)
+# and handles stop. OCP only asks skills that support the media type it
+# guessed, so AUDIO, MUSIC and GENERIC are accepted and the result echoes
+# the query's type.
+OCP_MEDIA = [MediaType.AUDIO, MediaType.MUSIC, MediaType.GENERIC]
+OCP_CONFIDENCE = 100
+SKILL_ROOT = Path(__file__).resolve().parent
+
+
+class MorseCode(OVOSCommonPlaybackSkill):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, supported_media=OCP_MEDIA,
+                         skill_icon=str(SKILL_ROOT / "icon.png"), **kwargs)
+
+    def _ocp_text(self, phrase, lang):
+        """The text in "hello world in morse (code)" - None unless the
+        phrase ends with a morse suffix and has something to encode."""
+        text = " ".join(re.findall(r"\w+", (phrase or "").lower()))
+        for suffix in sorted(self.voc_list("morse_suffix", lang), key=len, reverse=True):
+            suffix = suffix.lower().strip()
+            if text.endswith(" " + suffix):
+                text = text[: -len(suffix)].strip()
+                patterns = text_to_morse(text)
+                if patterns and not all(p == "WORD_GAP" for p in patterns):
+                    return text
+                return None
+        return None
+
+    @ocp_search()
+    def search_morse(self, phrase, media_type=MediaType.GENERIC):
+        text = self._ocp_text(phrase, self.lang)
+        if not text:
+            return []
+        return [MediaEntry(
+            uri=f"file://{_tone_path_for_text(text)}",
+            title=f"{text} (morse)",
+            artist="Morse Code",
+            media_type=media_type if media_type in OCP_MEDIA else MediaType.AUDIO,
+            playback=PlaybackType.AUDIO,
+            match_confidence=OCP_CONFIDENCE,
+            skill_icon=self.skill_icon,
+            skill_id=self.skill_id,
+        )]
 
     @intent_handler("play_morse.intent")
     def handle_play_morse(self, message):
