@@ -1,0 +1,3 @@
+{"utterance": "how do you say hello world in morse code", "lang": "en-US", "skill_id": "ovos-skill-morse-code.andlo", "intent_label": "play_morse"}
+{"utterance": "play sos in morse", "lang": "en-US", "skill_id": "ovos-skill-morse-code.andlo", "intent_label": "play_morse"}
+{"utterance": "play ovos in morse code", "lang": "en-US", "skill_id": "ovos-skill-morse-code.andlo", "intent_label": "play_morse"}
